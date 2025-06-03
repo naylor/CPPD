@@ -1,0 +1,9 @@
+:80 {Add commentMore actions
+  root * /usr/share/caddy
+  file_server
+  encode gzip
+
+  handle_errors {
+    respond "404 - Not Found" 404
+  }
+}

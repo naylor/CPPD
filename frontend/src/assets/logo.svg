@@ -1,0 +1,25 @@
+<svg width="485" height="80" viewBox="0 0 485 80" xmlns="http://www.w3.org/2000/svg">
+  <rect width="485" height="80" fill="#fff"/>
+  <!-- Horizontal banner with document and checkmark -->
+  <rect x="8" y="8" width="60" height="62" rx="12" fill="#eaf6ff" stroke="#0074d9" stroke-width="1.5"/>
+  <!-- Document icon inside banner -->
+  <rect x="20" y="20" width="36" height="32" rx="3" fill="#fff" stroke="#0074d9" stroke-width="1.2"/>
+  <rect x="20" y="20" width="36" height="7" fill="#cce4f7"/>
+  <rect x="26" y="30" width="22" height="3" fill="#b3d3ee"/>
+  <rect x="26" y="36" width="15" height="3" fill="#b3d3ee"/>
+  <!-- Checkmark on document -->
+  <polyline points="31,45 38,53 52,31" fill="none" stroke="#4caf50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Podium, right under the banner -->
+  <rect x="75" y="49" width="12" height="16" rx="2" fill="#ffd700"/>
+  <rect x="93" y="44" width="12" height="21" rx="2" fill="#c0c0c0"/>
+  <rect x="111" y="54" width="12" height="11" rx="2" fill="#cd7f32"/>
+  <!-- Vertical dividing line -->
+  <rect x="132" y="14" width="2" height="52" fill="#0074d9"/>
+  <!-- Main text on right, vertically centered -->
+  <text x="150" y="39" font-family="Arial, Helvetica, sans-serif" font-size="34" fill="#0074d9" font-weight="bold" letter-spacing="3">
+    PODIUM
+  </text>
+  <text x="150" y="65" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#222" font-weight="bold">
+    Sistema de Pontuação de Documentos
+  </text>
+</svg>
