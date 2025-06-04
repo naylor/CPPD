@@ -27,8 +27,8 @@ Sistema de Pontuação de Documentos
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/naylor/CPPD.git
-   cd CPPD
+   git clone https://github.com/naylor/Podium.git
+   cd Podium
    ```
 
 2. **Configuração de ambiente:**  
@@ -37,7 +37,7 @@ Sistema de Pontuação de Documentos
     VITE_API_URL=http://localhost
     VITE_API_PORT=8000
 
-    Na pasta CPPD, no .env para o Backend, faça as demais configurações.
+    Na pasta Podium, no .env para o Backend, faça as demais configurações.
 
 3. **Instale os Docker**
 
