@@ -2,6 +2,8 @@
 
 Sistema de Pontuação de Documentos
 
+[![Assista ao vídeo](https://img.youtube.com/vi/iJV6Lqx4mGQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=iJV6Lqx4mGQ)
+
 > Sistema desenvolvido para agilizar processos como Classe Titular e RSC das Instituições Federais de Ensino.
 
 > O sistema permite que usuários façam seu cadastro e participem de um processo, podemos enviando documentos e realizar sua pontuação.
