@@ -59,6 +59,11 @@ Sistema de Pontuação de Documentos
    [http://localhost:8080](http://localhost:8080) (ou a porta configurada no seu projeto)
 
 
+7. **Usuário padrão:**
+   user: admin
+   pass: admin
+
+
 ## Alterações no projeto
 
 Criar o .venv:
@@ -76,13 +81,26 @@ Instalar as dependências:
    pip install -r requirements.txt
    ```
 
+Para o banco de dados:
+   ```bash
+   python manage.py makemigrations sysdoc
+   ```
+   ```bash
+   python manage.py migrate
+   ```
+
+Para criar o admin:
+   ```bash
+   python manage.py createsuperuser
+   ```
+
 Rodar o backend:
    ```bash
    python manage.py runserver
    ou
    gunicorn config.wsgi:application
    ```
-   
+
 Rodar o frontend:
    ```bash
    npm run dev
