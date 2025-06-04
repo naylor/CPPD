@@ -59,7 +59,36 @@ Sistema de Pontuação de Documentos
    [http://localhost:8080](http://localhost:8080) (ou a porta configurada no seu projeto)
 
 
-## Licença
+## Alterações no projeto
+
+Criar o .venv:
+   ```bash
+   python3 -m venv .venv
+   ```
+
+Ativar o .venv:
+   ```bash
+   source .venv/bin/activate
+   ```
+
+Instalar as dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+Rodar o backend:
+   ```bash
+   python manage.py runserver
+   ou
+   gunicorn config.wsgi:application
+   ```
+   
+Rodar o frontend:
+   ```bash
+   npm run dev
+   ```  
+   
+   
 
 Este projeto está sob licença proprietária. Consulte o autor para uso e distribuição.
 
