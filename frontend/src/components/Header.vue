@@ -215,7 +215,7 @@ export default {
       this.showMenu = false;
       const userId = localStorage.getItem("userId");
       if (userId) {
-        this.$router.push({ name: "EditarUsuario", params: { id: userId } });
+        this.$router.push({ name: "EditarUsuarioUser", params: { id: userId } });
       }
     }
   },

@@ -47,6 +47,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log("Erro na resposta do servidor:", error.response || error.message);
     // Verificar se o erro é devido a status 401 Unauthorized
     if (error.response && error.response.status === 401 ||
       error.response && error.response.status === 400
