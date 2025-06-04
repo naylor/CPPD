@@ -12,7 +12,7 @@
                             </span>
                         </h3>
                         <span v-if="processo.link_processo_pdf" class="pdf-link-right">
-                            <button class="btn-back" @click.stop="handleVoltar">&#8592; Voltar</button>
+                            <button class="btn-back" @click.stop="handleVoltar">Voltar</button>
                             <button class="btn-download-processo"
                                 @click.stop="openDocumento(processo.link_processo_pdf)">
                                 Download
@@ -679,9 +679,46 @@ export default {
     border-top: 1px solid #ccc;
 }
 
-.modal,
-.modal-doc,
+.doc-filename-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0px;
+}
+
+.document-quantity-inline {
+    margin-left: 10px;
+    color: #555;
+    font-size: 0.98em;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.obs-reajuste-doc {
+    color: #d32f2f;
+    font-size: 0.93em;
+    margin-left: 0px;
+    margin-top: 2px;
+    line-height: 1;
+    font-style: italic;
+}
+
 .modal-tarefa {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -50;
+}
+
+.modal,
+.modal-doc {
+
     position: fixed;
     top: 0;
     left: 0;
@@ -715,39 +752,110 @@ export default {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* AUMENTADO: Modal para documentos */
+.modal-content.modal-content-log {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px #0004;
+    padding: 26px 28px 18px 28px;
+    /* padding moderado */
+    min-width: 320px;
+    max-width: 90vw;
+    min-height: 0;
+    max-height: 92vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 19px;
+    align-items: flex-start;
+}
+
+.modal-content-log .modal-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.modal-content-log .modal-header h3 {
+    font-size: 1.08rem;
+    font-weight: bold;
+    margin: 0;
+    color: #222;
+}
+
+.modal-content-log p {
+    font-size: 1.02rem;
+    margin-bottom: 10px;
+    margin-top: 8px;
+}
+
+.modal-content-log .modal-actions {
+    display: flex;
+    gap: 18px;
+    /* espaçamento entre os botões */
+    margin-top: 10px;
+}
+
 .modal-content-doc {
-    width: 90vw !important;
-    height: 90vh !important;
+    width: 80vw !important;
+    height: 95vh !important;
     min-width: 0;
     min-height: 0;
     max-width: 98vw;
     max-height: 98vh;
 }
 
-/* MANTIDO: Modal pequeno para "reajustar" */
-.modal-content-reajuste {
-    width: 360px !important;
-    min-width: 0 !important;
-    max-width: 96vw !important;
-    height: auto !important;
-    max-height: 90vh !important;
-    padding: 18px 18px 16px 18px;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
-
 .modal-content-doc iframe {
     width: 100% !important;
-    height: 87% !important;
+    height: 90% !important;
 }
 
-/* AUMENTADO: Modal para tarefas */
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-back {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+
+.btn-back:hover {
+    background: #e2e2e2;
+    color: #222;
+    border-color: #888;
+}
+
+.btn-close {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: background 0.18s;
+}
+
+.btn-close:hover {
+    background: #a71d2a;
+
+}
+
+
 .modal-content-tarefa {
     width: 100%;
-    min-width: 400px;
-    max-width: 1200px;
-    min-height: 500px;
+    min-width: 320px;
+    max-width: 900px;
+    min-height: 350px;
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -769,6 +877,33 @@ export default {
     box-sizing: border-box;
 }
 
+.descricao-tarefa-topo {
+    width: 100%;
+    background: #f3f8ff;
+    border-bottom: 1px solid #d5e2f5;
+    padding: 14px 24px 10px 24px;
+    margin-bottom: 0;
+    font-size: 1.07rem;
+}
+
+.descricao-tarefa-texto {
+    margin-top: 4px;
+    color: #305080;
+    font-size: 1.01rem;
+    font-weight: 500;
+    white-space: pre-line;
+}
+
+.modal-flex-left {
+    flex: 1 1 0;
+    padding: 24px 18px 18px 24px;
+    min-width: 260px;
+    max-width: 350px;
+    display: flex;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
 .modal-flex-right {
     flex: 1.1 1 0;
     min-width: 200px;
@@ -779,11 +914,11 @@ export default {
     box-sizing: border-box;
 }
 
-.vertical-action-divider {
-    width: 1px;
-    height: 28px;
-    background: #d6dbe2;
-    margin: 0 10px;
+.vertical-divider {
+    width: 2px;
+    background: #ededed;
+    min-height: 280px;
+    margin: 0 8px;
     align-self: stretch;
 }
 
@@ -824,18 +959,47 @@ export default {
     font-weight: bold;
 }
 
-.document-quantity {
-    white-space: nowrap;
-    font-size: 0.99em;
-    color: #555;
+.vertical-action-divider {
+    width: 1px;
+    height: 28px;
+    background: #d6dbe2;
+    margin: 0 10px;
+    align-self: stretch;
 }
 
-.reajustar-link {
-    color: #d32f2f;
-    margin-left: 10px;
-    cursor: pointer;
-    text-decoration: underline;
-    font-weight: bold;
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.btn-sm {
+    font-size: 0.92rem;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+    opacity: 0.9;
+
+
+
 }
 
 .dialog-scrollable {
@@ -859,6 +1023,36 @@ export default {
     background: #888;
 }
 
+.button-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.button-container button {
+    padding: 8px 18px;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+.button-container button:nth-child(2) {
+    background-color: #dc3545;
+}
+
+.button-container button:nth-child(2):hover {
+    background-color: #a71d2a;
+}
+
 .section-title {
     color: #6c757d;
     font-size: 1.07rem;
@@ -876,6 +1070,103 @@ export default {
     margin-top: 20px;
 }
 
+.form-group label {
+    font-size: 1rem;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #f7faff;
+    cursor: pointer;
+    transition: border 0.2s;
+    margin-top: 2px;
+    margin-bottom: 7px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.custom-file-upload:hover,
+.custom-file-upload:focus-within {
+    border: 1.5px solid #007bff;
+    background: #f0f8ff;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload svg {
+    margin-right: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 7px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.aviso-maximo {
+    color: #c00;
+    background: #ffeaea;
+    margin-bottom: 6px;
+    padding: 5px 7px;
+    border-radius: 4px;
+    font-size: 0.98rem;
+    border: 1px solid #c00;
+}
+
+@media (max-width: 850px) {
+    .modal-content-tarefa {
+        max-width: 55vw;
+        min-width: 0;
+        padding: 0;
+    }
+
+    .modal-content-doc {
+        width: 96vw;
+        min-width: 0;
+        height: 75vh;
+        min-height: 220px;
+    }
+
+    .modal-flex {
+        flex-direction: column;
+    }
+
+    .vertical-divider {
+        display: none;
+    }
+
+    .modal-flex-right {
+        max-width: 100%;
+        min-width: 0;
+        padding: 12px !important;
+    }
+
+    .uploaded-document {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .action-buttons {
+        margin-top: 6px;
+    }
+}
+
 .btn-download-processo {
     background: #399b3a;
     color: #fff;
@@ -883,7 +1174,8 @@ export default {
     padding: 8px 16px;
     border-radius: 4px;
     font-size: 1rem;
-    margin-left: 10px;
+    margin-left: 0;
+    margin-right: 10px;
     cursor: pointer;
     transition: background 0.18s;
     white-space: nowrap;
@@ -893,21 +1185,10 @@ export default {
     background: #2d7330;
 }
 
-.btn-back-processo {
-    background: #bdbdbd;
-    color: #222;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 1rem;
-    margin-right: 8px;
-    cursor: pointer;
-    transition: background 0.18s;
-    white-space: nowrap;
-}
+.pontos-info {
+    color: #007bff;
+    font-size: 1em;
 
-.btn-back-processo:hover {
-    background: #868686;
 }
 
 .processo-header-flex {
@@ -920,9 +1201,61 @@ export default {
 
 .pdf-link-right {
     margin-left: auto;
-    min-width: 110px;
+    min-width: 190px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    gap: 10px;
+}
+
+.pdf-download-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pdf-download-link:hover {
+    text-decoration: underline;
+    color: #004999;
+}
+
+/* Toast/Snackbar styles */
+.custom-toast {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 220px;
+    max-width: 380px;
+    background: #323232;
+    color: #fff;
+    border-radius: 6px;
+    padding: 14px 24px;
+    font-size: 1.04em;
+    box-shadow: 0 2px 8px #0002;
+    z-index: 99999;
+    text-align: center;
+    opacity: 0.93;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.custom-toast.success {
+    background: #16a34a;
+    color: #fff;
+}
+
+.custom-toast.error {
+    background: #d32f2f;
+    color: #fff;
+}
+
+.custom-toast.info {
+    background: #1976d2;
+    color: #fff;
 }
 </style>
