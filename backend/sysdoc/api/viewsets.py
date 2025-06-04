@@ -14,6 +14,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from django.shortcuts import get_object_or_404
 
@@ -22,11 +23,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 # ---- NOVOS VIEWSETS PARA PROCESSO ---- #
 class ProcessoViewSet(ModelViewSet):
+    permission_classes = [AllowAny]
     queryset = Processo.objects.all().order_by('id')
     serializer_class = ProcessoSerializer
 
 # ---- NOVOS VIEWSETS PARA TAREFA-PROCESSO ---- #
 class TarefaProcessoViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = TarefaProcesso.objects.all().order_by('id')
 
     def get_serializer_class(self):
@@ -42,6 +45,7 @@ class ItemizacaoViewSet(ModelViewSet):
     - Para criação e edição, usa o serializer que aceita 'processo' e 'itemSuperior'.
     - Para retrieve, retorna árvore detalhada (com subitemizações e tarefas).
     """
+    permission_classes = [IsAuthenticated]
     queryset = Itemizacao.objects.all().order_by('id')
 
     def get_serializer_class(self):
@@ -62,6 +66,7 @@ class ItemizacaoViewSet(ModelViewSet):
         return Response(serializer.data)
 
 class UsuarioDocsViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = UsuarioDocs.objects.all().order_by('id')
     serializer_class = UsuarioDocsSerializer
 
@@ -88,6 +93,8 @@ class UsuarioDocsViewSet(ModelViewSet):
 
 # ---- NOVOS VIEWSETS PARA USUARIO-PROCESSO ---- #
 class UsuarioProcessoViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
     queryset = UsuarioProcesso.objects.all().order_by('id')
     serializer_class = UsuarioProcessoSerializer
 
@@ -135,5 +142,7 @@ class UsuarioProcessoViewSet(ModelViewSet):
 
 # ---- NOVOS VIEWSETS PARA USUÁRIO ---- #
 class UserViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer

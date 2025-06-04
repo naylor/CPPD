@@ -1,7 +1,24 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8000/';
 
-const API_URL_TOKEN = `${API_URL}/token/`
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  const envPort = import.meta.env.VITE_API_PORT;
+
+  if (envUrl) {
+    return envPort ? `${envUrl}:${envPort}` : envUrl;
+  }
+
+  const { protocol, hostname } = window.location;
+
+  // Fallback: localhost + porta padrão
+  const defaultPort = '8000';
+  const port = envPort || defaultPort;
+
+  return `${protocol}//${hostname}:${port}`;
+};
+
+const API_URL = getBaseUrl();
+const API_URL_TOKEN = `${API_URL}/token/`;
 
 export const login = async (username, password) => {
   try {

@@ -195,8 +195,6 @@
             </div>
         </div>
 
-        <ConfirmDialog ref="confirmDialog" class="confirm-dialog-modal" />
-        <MessageDialog ref="messageDialog" />
     </div>
 </template>
 
@@ -273,18 +271,33 @@ export default {
             this.isModalTarefaOpen = true;
         },
         async openDocumento(filename) {
+            const token = localStorage.getItem("access_token");
             this.isModalDocOpen = true;
-            this.pdfUrl = filename;
+
             try {
-                const response = await fetch(this.pdfUrl);
-                if (!response.ok) throw new Error('Error fetching PDF file');
+                const response = await fetch(filename, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar o PDF");
+                }
+
                 const pdfBlob = await response.blob();
                 const pdfBlobUrl = URL.createObjectURL(pdfBlob);
-                pdfjsLib.getDocument(pdfBlobUrl).promise.then(() => { }).catch((error) => {
-                    console.error('Error loading PDF:', error);
+                this.pdfUrl = pdfBlobUrl;
+
+                // Se você estiver usando pdfjsLib para renderizar
+                pdfjsLib.getDocument(pdfBlobUrl).promise.then(() => {
+                    // PDF carregado com sucesso (se quiser renderizar manualmente depois)
+                }).catch(() => {
+                    this.showToast("Erro ao carregar o PDF.", "error");
                 });
             } catch (error) {
-                console.error('Error fetching PDF URL:', error);
+                console.error("Erro ao abrir o PDF com autenticação:", error);
+                this.showToast("Erro ao abrir o PDF do processo.", "error");
             }
         },
         closeModalDoc() {

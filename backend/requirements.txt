@@ -5,3 +5,5 @@ django-cors-headers
 django-filter
 reportlab
 PyPDF2==2.12.1
+gunicorn
+python-decouple

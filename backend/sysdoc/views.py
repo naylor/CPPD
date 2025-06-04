@@ -19,11 +19,12 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from .models import Processo, Itemizacao, TarefaProcesso, UsuarioDocs, UsuarioProcesso
 from django.contrib.auth.models import User
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from .api.serializers import ItemizacaoTreeSerializer
+from rest_framework.permissions import AllowAny
 
 logger = logging.getLogger('sysdocLogger')
 
@@ -54,6 +55,8 @@ def activate_user(request, uidb64, token):
         return Response({'detail': 'Token de ativação inválido.'}, status=400)
 
 class ResendActivationView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         username = request.data.get("username")
         if not username:
@@ -98,6 +101,8 @@ class ChangePasswordView(APIView):
         return Response({'detail': 'Senha alterada com sucesso.'})
     
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def gerar_pdf_processo(request, processo_id, usuario_id, usuario_process_id):
     processo = get_object_or_404(Processo, id=processo_id)
     usuario = get_object_or_404(User, id=usuario_id)
