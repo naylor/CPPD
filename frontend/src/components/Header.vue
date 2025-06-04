@@ -19,7 +19,13 @@
         </button>
       </div>
       <div v-else class="user-info">
-        <span class="username clickable" @click="openChangePasswordModal">{{ username }}</span>
+        <div class="user-menu-container" @mouseenter="onMenuEnter" @mouseleave="onMenuLeave" tabindex="0">
+          <span class="username clickable" @click="toggleMenu" tabindex="0">{{ username }}</span>
+          <div v-if="showMenu" class="user-menu-dropdown" @mousedown.stop>
+            <button class="user-menu-item" @click="openChangePasswordModal">Trocar senha</button>
+            <button class="user-menu-item" @click="handleEditUser">Editar usuário</button>
+          </div>
+        </div>
         <button @click="handleLogout" class="btn-acoes logout-btn">Sair</button>
       </div>
     </div>
@@ -76,6 +82,8 @@ export default {
       loginError: '',
       messageTimers: {},
       showChangePasswordModal: false,
+      showMenu: false,
+      closeMenuTimeout: null,
     };
   },
   computed: {
@@ -184,14 +192,35 @@ export default {
         this.$router.push({ name: "NovoUsuarioUser" });
       }
     },
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
+    },
+    onMenuEnter() {
+      clearTimeout(this.closeMenuTimeout);
+      this.showMenu = true;
+    },
+    onMenuLeave() {
+      this.closeMenuTimeout = setTimeout(() => {
+        this.showMenu = false;
+      }, 100); // Pequeno delay para evitar sumir ao mover rápido
+    },
     openChangePasswordModal() {
+      this.showMenu = false;
       this.showChangePasswordModal = true;
     },
     closeChangePasswordModal() {
       this.showChangePasswordModal = false;
+    },
+    handleEditUser() {
+      this.showMenu = false;
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        this.$router.push({ name: "EditarUsuario", params: { id: userId } });
+      }
     }
   },
   beforeUnmount() {
+    if (this.closeMenuTimeout) clearTimeout(this.closeMenuTimeout);
     Object.values(this.messageTimers).forEach(timer => clearTimeout(timer));
   }
 };
@@ -235,6 +264,43 @@ export default {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.user-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid #e6e8f0;
+  border-radius: 5px;
+  box-shadow: 0 4px 16px #0002;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+}
+
+.user-menu-item {
+  background: none;
+  border: none;
+  color: #26334d;
+  text-align: left;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s;
+}
+
+.user-menu-item:hover {
+  background: #f5f7fa;
+  color: #0075ff;
 }
 
 .username {

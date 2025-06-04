@@ -50,7 +50,7 @@ export const logout = () => {
 // Função para reenviar link de ativação
 export const resendActivationLink = async (username) => {
   try {
-    const response = await axios.post(`${API_URL}resend-activation/`, { username });
+    const response = await axios.post(`${API_URL}/resend-activation/`, { username });
     if (response.data && response.data.detail === "Usuário já está ativado.") {
       // Retorne um status ou mensagem diferente para o frontend tratar
       return { alreadyActivated: true };
@@ -65,7 +65,7 @@ export const changePassword = async (username, currentPassword, newPassword) => 
   try {
     const accessToken = localStorage.getItem('access_token');
     const response = await axios.post(
-      `${API_URL}change-password/`,
+      `${API_URL}/change-password/`,
       {
         username,
         current_password: currentPassword,
@@ -80,6 +80,7 @@ export const changePassword = async (username, currentPassword, newPassword) => 
     // Sucesso esperado: { success: true } ou { detail: "Senha alterada com sucesso" }
     return response.data;
   } catch (error) {
+    console.error("Erro ao alterar senha:", error.response || error.message);
     // Mensagem de erro amigável
     let msg = "Erro ao alterar senha. Tente novamente.";
     if (error.response && error.response.data && error.response.data.detail) {

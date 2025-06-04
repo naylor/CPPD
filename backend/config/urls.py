@@ -10,10 +10,11 @@ from sysdoc.api.viewsets import (CustomTokenObtainPairView,
 )
 from rest_framework_simplejwt import views as jwt_views
 from sysdoc.views import (gerar_pdf_processo, activate_user, 
-                          ChangePasswordView, ResendActivationView,
+                          ChangePasswordView,
                           ArvoreView)
 from django.conf.urls.static import static
 from django.conf import settings
+from sysdoc.views import resend_activation
 
 
 router = DefaultRouter()
@@ -34,7 +35,7 @@ path(
     path('admin/', admin.site.urls),
     path('change-password/', ChangePasswordView.as_view(), name='change-password'),
     path('activate/<uidb64>/<token>/', activate_user, name='activate-user'),
-    path('resend-activation/', ResendActivationView.as_view(), name='resend-activation'),
+    path('resend-activation/', resend_activation, name='resend-activation'),
     path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('', include(router.urls)),

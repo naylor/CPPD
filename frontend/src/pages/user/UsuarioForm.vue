@@ -138,12 +138,7 @@ export default {
                     // Não chama goBack automaticamente, espera o usuário clicar em OK
                 }
             } catch (e) {
-                if (e.response && e.response.data) {
-                    const errors = e.response.data;
-                    this.errorMessage = Object.values(errors).flat().join(" ");
-                } else {
-                    this.errorMessage = "Erro ao salvar usuário.";
-                }
+                this.errorMessage = e;
             } finally {
                 this.loading = false;
             }

@@ -23,7 +23,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from .api.serializers import ItemizacaoTreeSerializer
+from .api.serializers import ItemizacaoTreeSerializer, send_confirmation_email
 from rest_framework.permissions import AllowAny
 
 logger = logging.getLogger('sysdocLogger')
@@ -35,8 +35,8 @@ class ArvoreView(APIView):
         return Response({'arvore': serializer.data})
     
 
-    
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def activate_user(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -54,38 +54,22 @@ def activate_user(request, uidb64, token):
     else:
         return Response({'detail': 'Token de ativação inválido.'}, status=400)
 
-class ResendActivationView(APIView):
-    permission_classes = [AllowAny]
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def resend_activation(request):
+    username = request.data.get("username")
+    if not username:
+        return Response({"error": "Usuário não informado."}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = User.objects.get(username=username)
+        if user.is_active:
+            return Response({"detail": "Usuário já está ativado."}, status=status.HTTP_200_OK)
+        # Aqui chama a função do serializers.py
+        send_confirmation_email(user)
+        return Response({"detail": "Link de ativação reenviado."}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({"error": "Usuário não encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
-    def post(self, request):
-        username = request.data.get("username")
-        if not username:
-            return Response({"error": "Usuário não informado."}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            user = User.objects.get(username=username)
-            if user.is_active:
-                return Response({"detail": "Usuário já está ativado."}, status=status.HTTP_200_OK)
-            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            token = default_token_generator.make_token(user)
-            domain = "localhost:8080"
-            activation_link = f"http://{domain}/activate/{uidb64}/{token}"
-            send_mail(
-                "Ative sua conta",
-                f"Olá,\n\nPor favor, clique no link abaixo para ativar sua conta:\n{activation_link}\n\nSe você não se cadastrou, ignore este e-mail.",
-                settings.DEFAULT_FROM_EMAIL,
-                [user.email],
-                html_message=f"""
-                    <p>Olá,</p>
-                    <p>Por favor, clique no link abaixo para ativar sua conta:</p>
-                    <p>
-                    <a href="{activation_link}">{activation_link}</a>
-                    </p>
-                    <p>Se você não se cadastrou, ignore este e-mail.</p>
-                """
-            )
-            return Response({"detail": "Link de ativação reenviado."}, status=status.HTTP_200_OK)
-        except User.DoesNotExist:
-            return Response({"error": "Usuário não encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]

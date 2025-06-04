@@ -257,8 +257,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'email', 'email2', 'password')
-
+        fields = ('id', 'username', 'first_name', 'email', 'email2', 'password', 'is_active', 'is_staff',)
+        extra_kwargs = {
+            'password': {'write_only': True, 'required': False},
+            'is_active': {'required': False},
+            'is_staff': {'required': False},
+        }
+        
     def validate(self, data):
         if data.get('email') != data.get('email2'):
             raise serializers.ValidationError("Os e-mails não coincidem.")

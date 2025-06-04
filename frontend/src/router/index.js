@@ -5,6 +5,7 @@ import UsuarioProcessoList from '@/pages/admin/UsuarioProcessoList.vue';
 import UsuarioProcessoForm from '@/pages/admin/UsuarioProcessoForm.vue';
 import UsuarioProcessoDocs from '@/pages/admin/UsuarioProcessoDocs.vue';
 import ItemizacaoTarefaTree from '@/pages/admin/ItemizacaoTarefaTree.vue';
+import ListarUsuarios from '@/pages/admin/UsuarioList.vue';
 import Home from '@/pages/Home.vue';
 import UsuarioUserForm from '@/pages/user/UsuarioForm.vue';
 import UsuarioProcessoUser from '@/pages/user/UsuarioProcessoList.vue';
@@ -86,7 +87,7 @@ const routes = [
     name: "DocsUsuarioProcessoUser",
     component: UsuarioProcessoDocsUser,
   },
-  //LOGIN - ATIVAR CONTA
+  //USUARIO - ATIVAR CONTA
   {
     path: '/ativar-conta/:uid/:token',
     name: 'AtivarConta',
@@ -96,6 +97,12 @@ const routes = [
     path: '/activate/:uidb64/:token',
     name: 'ActivateUser',
     component: AtivarConta,
+    props: true
+  },
+  {
+    path: '/user',
+    name: 'ListarUsuarios',
+    component: ListarUsuarios,
     props: true
   }
 ];

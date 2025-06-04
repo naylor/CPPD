@@ -34,6 +34,9 @@ export default {
           <li>
             <router-link :to="{ name: 'ListarUsuarioProcesso' }">Processos dos Usuários</router-link>
           </li>
+          <li>
+            <router-link :to="{ name: 'ListarUsuarios' }">Usuários</router-link>
+          </li>
         </ul>
       </li>
 

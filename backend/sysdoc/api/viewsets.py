@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny, IsAuthenticated
-
+from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -142,7 +142,29 @@ class UsuarioProcessoViewSet(ModelViewSet):
 
 # ---- NOVOS VIEWSETS PARA USUÁRIO ---- #
 class UserViewSet(ModelViewSet):
-    permission_classes = [IsAuthenticated]
-
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [IsAuthenticated()]
+
+    def list(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response({'detail': 'Não autorizado.'}, status=status.HTTP_403_FORBIDDEN)
+        return super().list(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response({'detail': 'Não autorizado.'}, status=status.HTTP_403_FORBIDDEN)
+        return super().retrieve(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.user.id == instance.id:
+            return Response(
+                {"detail": "Você não pode apagar o próprio usuário logado."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().destroy(request, *args, **kwargs)

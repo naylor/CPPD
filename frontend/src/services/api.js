@@ -55,15 +55,22 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem("username");
       localStorage.removeItem('access_token');
       
-      alert("Faça o login novamente!");
-      
-      window.location.reload();
-      console.log('Erro 401: Não autorizado');
-      // Aqui você pode adicionar lógica para redirecionar o usuário para login ou qualquer outra ação
+      //alert("Faça o login novamente!");
+      if (error.response && error.response.data.username[0].includes('já existe')) {
+        return Promise.reject("Este nome de usuário já está em uso. Tente outro.");
+      } else {
+        return Promise.reject("Erro ao cadastrar usuário.", "error");
+      }
+      //window.location.reload();
     }
-
-    // Se necessário, pode retornar o erro para que ele seja tratado em outros lugares
-    return Promise.reject(error);
+    if (error.response && error.response.status === 403) {
+      return Promise.reject(error.response.data.detail || "Acesso negado. Você não tem permissão para acessar este recurso.");
+    }
+    if (error.response && error.response.status === 500) {
+      return Promise.reject("Usuário criado, porém o Serviço de E-mail não está funcionando para envio do link de ativação. Entre em contato com o administrador do sistema.");
+    }
+    console.error("Erro inesperado:", error.response || error.message);
+    return Promise.reject("Erro inesperado. Tente novamente mais tarde.");
   }
 );
 export default axiosInstance;
